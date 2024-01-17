@@ -1,0 +1,15 @@
+package Admin;
+
+public class App extends Super {
+	public App(int index) {
+		this.index=index;
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		App myApp = new App(10);
+		System.out.println(myApp.index);
+
+	}
+
+}

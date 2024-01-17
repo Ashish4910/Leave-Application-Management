@@ -1,0 +1,45 @@
+package Admin;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class Add_Manage_Admin
+ */
+@WebServlet("/AddManageAdmin")
+public class Add_Manage_Admin extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+   
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		String Name=request.getParameter("name");
+		String username=request.getParameter("UserName");
+		String Email=request.getParameter("Email");
+		/*
+		 * System.out.println(Name); System.out.println(username);
+		 * System.out.println(Email);
+		 */
+		Connection conn=null;
+		PreparedStatement pstmt =null;
+		ResultSet rs= null;
+		String sql = "insert into manage_admin (Name,Username,Email,AccountCreatedOn)values (?,?,?,?) ";
+		try {
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			
+		}
+	}
+
+}

@@ -1,0 +1,421 @@
+<!doctype html>
+<%@page import="java.sql.Statement"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.Connection"%>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+	crossorigin="anonymous">
+
+<style type="text/css">
+.full-height-sidebar {
+	height: 100vh;
+	background-color: #111;
+	color: white;
+}
+
+.custom-width {
+	width: 280px;
+}
+
+.btn-wider {
+	min-width: 150px;
+}
+
+/* Add CSS to make the right side content scrollable */
+.right-content {
+	overflow-y: auto;
+	height: calc(100vh - 72px); /* Adjust the height as needed */
+	padding: 20px;
+	
+}
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+</style>
+<script>
+	function validateForm() {
+		// Add your validation logic here
+		var firstName = document.getElementsByName("firstName")[0].value;
+		var lastName = document.getElementsByName("lastName")[0].value;
+		var email = document.getElementsByName("email")[0].value;
+		var department = document.getElementsByName("department")[0].value;
+		var gender = document.getElementsByName("gender")[0].value;
+		var dob = document.getElementsByName("dob")[0].value;
+		var contact = document.getElementsByName("contact")[0].value;
+		var country = document.getElementsByName("country")[0].value;
+		var address = document.getElementsByName("address")[0].value;
+		var city = document.getElementsByName("city")[0].value;
+		var password = document.getElementsByName("password")[0].value;
+
+		// Perform validation checks
+		function validateForm() {
+    // Reset any previous error messages
+    resetErrorMessages();
+
+    // Validate each field and show error messages
+    var isValid = true;
+
+    function showError(fieldName, errorMessage) {
+        var errorElement = document.getElementById(fieldName + "Error");
+        errorElement.innerText = errorMessage;
+        isValid = false;
+    }
+
+    function resetErrorMessages() {
+        var errorElements = document.querySelectorAll('.error-message');
+        errorElements.forEach(function (element) {
+            element.innerText = '';
+        });
+    }
+
+   
+    // Add more fields as needed
+
+  /*   if (firstName.trim() === "") {
+        showError("firstName", "First Name cannot be empty");
+    }
+
+    if (lastName.trim() === "") {
+        showError("lastName", "Last Name cannot be empty");
+    }
+
+    if (email.trim() === "") {
+        showError("email", "Email cannot be empty");
+    }
+    // Add more validations
+
+    // If all checks pass, call the code to generate the random code
+    if (isValid) {
+        generateRandomCode();
+        document.forms[0].submit(); // Submit the form programmatically
+    }
+
+    // Prevent default form submission
+    return false;
+}
+
+		if (lastName.trim() === "") {
+			alert("Last Name cannot be empty");
+			return false;
+		}
+		if (email.trim() === "") {
+			alert("Last email cannot be empty");
+			return false;
+		}
+		if (department.trim() === "") {
+			alert("Last department cannot be empty");
+			return false;
+		}
+		if (gender.trim() === "") {
+			alert("Last gender cannot be empty");
+			return false;
+		}
+		if (dob.trim() === "") {
+			alert("Last dob cannot be empty");
+			return false;
+		}
+		if (contact.trim() === "") {
+			alert("Last contact cannot be empty");
+			return false;
+		}
+		if (address.trim() === "") {
+			alert("Last address cannot be empty");
+			return false;
+		}
+		if (city.trim() === "") {
+			alert("Last city cannot be empty");
+			return false;
+		}
+		if (password.trim() === "") {
+			alert("Last password cannot be empty");
+			return false;
+		}
+ */
+		// Add more validation checks for other fields as needed
+
+		// If all checks pass, call the code to generate the random code
+		generateRandomCode();
+
+		// Allow the form to be submitted
+		return true;
+	}
+
+	function generateRandomCode() {
+		// Define the prefix and generate a random 4-digit number
+		var prefix = "MMIWFE";
+		var randomCode = generateRandom4DigitNumber();
+
+		// Combine the prefix and the random code
+		var employeeId = prefix + randomCode;
+
+		// Set the generated code to the input field
+		document.getElementById("employeeId").value = employeeId;
+	}
+
+	function generateRandom4DigitNumber() {
+		return String(Math.floor(1000 + Math.random() * 9000));
+	}
+</script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+	integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+	<div class="row">
+		<div
+			class="d-flex flex-column  text-bg-dark  col-lg-2 full-height-sidebar custom-width ">
+			<a href="/"
+				class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+				<svg class="bi pe-none me-2" width="40" height="32">
+				<use xlink:href="#bootstrap"></use></svg> <span class="fs-4">Employee
+					Management</span>
+			</a>
+			<hr>
+			<ul class="nav nav-pills flex-column mb-auto container-fluid">
+				<li class="nav-item"><a href="Admin_dashboard.jsp"
+					class="nav-link active" aria-current="page"> <svg
+							class="bi pe-none me-2" width="16" height="16">
+						<use xlink:href="#home"></use></svg> Dashboard
+				</a></li>
+				<li><a href="Employee_Section.jsp" class="nav-link text-white">
+						<svg class="bi pe-none me-2" width="16" height="16">
+						<use xlink:href="#speedometer2"></use></svg> Employee Section
+				</a></li>
+				<li><a href="#" class="nav-link text-white"> <svg
+							class="bi pe-none me-2" width="16" height="16">
+						<use xlink:href="#table"></use></svg> Department Section
+				</a></li>
+				<li><a href="#" class="nav-link text-white"> <svg
+							class="bi pe-none me-2" width="16" height="16">
+						<use xlink:href="#grid"></use></svg> Leave Types
+				</a></li>
+				<li><a href="#" class="nav-link text-white"> <svg
+							class="bi pe-none me-2" width="16" height="16">
+						<use xlink:href="#people-circle"></use></svg> Manage Leaves
+				</a></li>
+				<li><a href="Manage_Admin.jsp" class="nav-link text-white">
+						<svg class="bi pe-none me-2" width="16" height="16">
+						<use xlink:href="#people-circle"></use></svg> Manage Admin
+				</a></li>
+			</ul>
+			<hr>
+			<div class="dropdown">
+				<a href="#"
+					class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+					data-bs-toggle="dropdown" aria-expanded="false"> <img
+					src="https://github.com/mdo.png" alt="" width="32" height="32"
+					class="rounded-circle me-2"> <strong>mdo</strong>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+					<li><a class="dropdown-item" href="#">New project...</a></li>
+					<li><a class="dropdown-item" href="#">Settings</a></li>
+					<li><a class="dropdown-item" href="#">Profile</a></li>
+					<li><hr class="dropdown-divider"></li>
+					<li><a class="dropdown-item" href="#">Sign out</a></li>
+				</ul>
+			</div>
+		</div>
+
+
+
+
+		<!-- ==================================== Second Div Start ===================== -->
+		<div class="container col-lg-9 bg-light mt-4 right-content">
+
+			<div class="card-body">
+				<nav class="navbar navbar-light bg-light">
+					<div class="container-fluid">
+						<a class="navbar-brand" href="#"><h4>Employee Section</h4></a> <a
+							class="navbar-brand" href="#">Home/Employee Management</a>
+						<!-- 	<button type="button" class="btn btn-primary"
+							style="hight: 200px; width: 200px">Admin</button> -->
+
+
+
+						<div class="dropdown nav-item ">
+							<a class="btn btn-success dropdown-toggle btn-lg  btn-wider "
+								href="#" role="button" data-bs-toggle="dropdown"
+								aria-expanded="false">Admin</a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">Log-Out</a></li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</div>
+
+			<hr>
+			<div class="container mt-4">
+				<div class=" mt-3 mb-5">
+					<h5>Please fill up the form in order to add Employee records</h5>
+				</div>
+				<form action="../Add_Employee" method="post"
+					onsubmit="generateRandomCode(); return validateForm();">
+
+					<!-- <div class="mb-3">
+						<label for="exampleInputEmail1" class="form-label">Employee
+							ID</label> <input type="text" class="form-control"
+							aria-describedby="emailHelp" name="employeeId" disabled
+							placeholder="Employee ID is Auto Generated ">
+					</div> -->
+
+
+
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">Employee
+							ID</label> <input type="text" class="form-control" id="employeeId"
+							name="employeeId" readonly
+							placeholder="Employee ID is Auto Generated">
+					</div>
+
+
+
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">First
+							Name</label> <input type="text" class="form-control" name="firstName">
+						<span id="firstNameError" class="error-message"></span>
+					</div>
+
+
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">Last
+							Name</label> <input type="text" class="form-control" name="lastName">
+					</div>
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">Email</label>
+						<input type="email" class="form-control" name="email">
+						<div id="emailHelp" class="form-text">We'll never share your
+							email with anyone else.</div>
+					</div>
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">Preferred
+							Department</label> <select name="department" class="form-control"
+							placeholder="Please Select the Department">
+							<option value="">Select Departments</option>
+							<%
+							try {
+								Class.forName("com.mysql.cj.jdbc.Driver");
+								Connection conn = DriverManager
+								.getConnection("jdbc:mysql://localhost:3306/employee_management?user=root&password=root123@");
+								String sql = "Select * from departments";
+								Statement pstmt = conn.createStatement();
+								ResultSet rs = pstmt.executeQuery(sql);
+								while (rs.next()) {
+							%>
+							<option value="<%=rs.getString("Department_Name")%>"><%=rs.getString("Department_Name")%></option>
+							<%
+							}
+							%>
+
+							<%
+							} catch (Exception e) {
+							e.printStackTrace();
+
+							}
+							%>
+
+						</select>
+					</div>
+
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">Choose
+							Gender</label> <select name="gender" class="form-control"
+							placeholder="Please Select the Gender">
+							<option value="">Select Gender</option>
+							<option value="male">Male</option>
+							<option value="female">Female</option>
+							<option value="other">Other</option>
+						</select>
+					</div>
+
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">DOB</label>
+						<input type="date" class="form-control" name="dob">
+					</div>
+
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">Contact
+							Number</label> <input type="number" class="form-control" name="contact">
+					</div>
+
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">Country</label>
+						<input type="text" class="form-control" name="country">
+					</div>
+
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">Address
+						</label> <input type="text" class="form-control" name="address">
+					</div>
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">City</label>
+						<input type="text" class="form-control" name="city">
+					</div>
+					<h3>Set password for Employee Login</h3>
+					<div class="mb-3">
+						<label for="exampleInputPassword1" class="form-label">Password</label>
+						<input type="password" class="form-control" name="password">
+					</div>
+
+
+
+
+
+					<button type="submit" class="btn btn-primary">Process</button>
+				</form>
+
+			</div>
+		</div>
+
+
+
+
+		<!-- 	========================second div end ========================= -->
+	</div>
+
+
+
+
+	<script>
+		function generateRandomCode() {
+			// Define the prefix and generate a random 4-digit number
+			var prefix = "MMIWFE";
+			var randomCode = generateRandom4DigitNumber();
+
+			// Combine the prefix and the random code
+			var employeeId = prefix + randomCode;
+
+			// Set the generated code to the input field
+			document.getElementById("employeeId").value = employeeId;
+		}
+
+		function generateRandom4DigitNumber() {
+			return String(Math.floor(1000 + Math.random() * 9000));
+		}
+	</script>
+
+
+
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+</body>
+</html>

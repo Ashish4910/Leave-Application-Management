@@ -1,0 +1,63 @@
+package Admin;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.mysql.cj.protocol.Resultset;
+import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
+
+
+@WebServlet("/EditmanageAdmin")
+public class Edit_manageAdmin extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+   
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		String id=  request.getParameter("id");
+	String name=	request.getParameter("name");
+	String UserName= request.getParameter("UserName");
+	String Email=	request.getParameter("Email");
+	String Accountno= request.getParameter("AccountCreatedOn");
+	/*
+	 * System.out.println(id); System.out.println(name); System.out.println(Email);
+	 * System.out.println(Accountno);
+	 */
+	Connection conn=null;
+	PreparedStatement pstmt= null;
+	ResultSet rs= null;
+	String sql="update  manage_admin set Name=?,Username=?,Email=?,AccountCreatedOn=? where id=?";
+	try {
+		conn=DriverManager.getConnection("com.mysql.cj.jdbc.Driver");
+		pstmt=conn.prepareStatement("jdbc:mysql://localhost:3306/employee_management?user=root&password=rppt123@");
+		pstmt.setString(1, name);
+		pstmt.setString(2, UserName);
+		pstmt.setString(3, Email);
+		pstmt.setString(4, Accountno);
+		   int row = pstmt.executeUpdate();
+		if(row>0) {
+			response.sendRedirect("Admin/Manage_Admin.jsp");
+		}
+		else {
+			response.sendRedirect("Admin/Edit_ManageAdmin.jsp");
+		}
+		
+	}
+	catch(Exception e) {
+		e.printStackTrace();
+		
+	}
+		
+	}
+
+}
